@@ -17,7 +17,7 @@ spec:
         ports:
         - protocol: TCP
           containerPort: 50051
-        image: gcr.io/anvil-staging/load-balance-grpc-k8s:latest
+        image: ghcr.io/anvilco/load-balance-grpc-k8s:latest
         imagePullPolicy: Always
         command:
           - node
@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - name: greeter-client
-        image: gcr.io/anvil-staging/load-balance-grpc-k8s:latest
+        image: ghcr.io/anvilco/load-balance-grpc-k8s:latest
         imagePullPolicy: Always
         command:
           - /bin/sh

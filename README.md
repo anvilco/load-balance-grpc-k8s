@@ -1,50 +1,51 @@
-gRPC in 3 minutes (Node.js)
-===========================
+# Load Balancing gRPC in Kubernetes
+====================================
+This repoisoiry contains a configured gRPC sample application that can be run in Kubernetes to test proper load balancing. 
+It will deploy client and server pods only accessible internally to a cluster. The client pod can run a script that will print the server host name. 
 
-PREREQUISITES
--------------
+This applicaiton is in support of our article on [Load Balancing gRPC in Kubernetes with Istio](). Refer to the article for a more detailed process on leveraging this application to improve load balancing in your kubernetes cluster. 
 
-- `node`: This requires Node 0.12.x or greater.
+## Build
+The image is prebuilt and availble. Just run `docker pull ghcr.io/anvilco/load-balance-grpc-k8s:latest` to pull locally. The Kubernetes manifest is already prepopulated with the public image. 
+If you would like to modify the image or build yourself, you can edit the `Dockerfile`.
 
-INSTALL
+## Deployment
+All Kubernetes resources are stored in the `k8s.yaml` file. To deploy these resources into you cluster, you can follow a process like the following:
+
+```sh
+# Logging in to GKE (or your Kubernetes provider)
+gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project project-name
+
+kubectl create namespace grpcdemo
+kubectl config set-context --current --namespace=grpcdemo
+
+kubectl apply -f ./k8s.yaml # Create the resources
+```
+
+## Running Test Script
+To execute the test script you need to ssh into the client pod. 
+```sh
+kubectl get pods | grep greeter-client # The proxy pod
+kubectl exec -it <pod name from above> -- bin/sh # Create a shell sessions to this pod
+```
+Once in the proxy pod, we can run our node script which will hit the gRPC servers and return a message along with the hostname of the server.
+
+```sh
+node greeter_client
+# response…
+##2 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#6 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#10 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#14 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#18 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#22 - Greeting: Hello from greeter-server-b8fb8c4b4-qjpjx, Anvil User!
+#…
+```
+
+## Purpose
+This test application provides insight into which pods are handling traffic. Looks through the responses and validate that there is an even split between servers handling requests. 
+
+Source
 -------
-
-   ```sh
-   $ # Get the gRPC repository
-   $ export REPO_ROOT=grpc # REPO root can be any directory of your choice
-   $ git clone -b RELEASE_TAG_HERE https://github.com/grpc/grpc $REPO_ROOT
-   $ cd $REPO_ROOT
-
-   $ cd examples/node
-   $ npm install
-   ```
-
-TRY IT!
--------
-
-There are two ways to generate the code needed to work with protocol buffers in Node.js - one approach uses [Protobuf.js](https://github.com/dcodeIO/ProtoBuf.js/) to dynamically generate the code at runtime, the other uses code statically generated using the protocol buffer compiler `protoc`. The examples behave identically, and either server can be used with either client.
-
- - Run the server
-
-   ```sh
-   $ # from this directory
-   $ node ./dynamic_codegen/greeter_server.js &
-   $ # OR
-   $ node ./static_codegen/greeter_server.js &
-   ```
-
- - Run the client
-
-   ```sh
-   $ # from this directory
-   $ node ./dynamic_codegen/greeter_client.js
-   $ # OR
-   $ node ./static_codegen/greeter_client.js
-   ```
-
-TUTORIAL
---------
-You can find a more detailed tutorial in [gRPC Basics: Node.js][]
-
-[Install gRPC Node]:../../src/node
-[gRPC Basics: Node.js]:https://grpc.io/docs/languages/node/basics
+The basis for this example is pulled from the [gRPC Node Example](https://github.com/grpc/grpc-node).
+More details and examples can be found in this repository. 
