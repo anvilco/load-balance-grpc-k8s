@@ -1,5 +1,4 @@
 # Load Balancing gRPC in Kubernetes
-====================================
 This repoisoiry contains a configured gRPC sample application that can be run in Kubernetes to test proper load balancing. 
 It will deploy client and server pods only accessible internally to a cluster. The client pod can run a script that will print the server host name. 
 
