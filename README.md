@@ -2,7 +2,7 @@
 This repoisoiry contains a configured gRPC sample application that can be run in Kubernetes to test proper load balancing. 
 It will deploy client and server pods only accessible internally to a cluster. The client pod can run a script that will print the server host name. 
 
-This applicaiton is in support of our article on [Load Balancing gRPC in Kubernetes with Istio](). Refer to the article for a more detailed process on leveraging this application to improve load balancing in your kubernetes cluster. 
+This applicaiton is in support of our article on [Load Balancing gRPC in Kubernetes with Istio](https://useanvil.com/blog/engineering/load-balancing-grpc-in-kubernetes-with-istio). Refer to the article for a more detailed process on leveraging this application to improve load balancing in your kubernetes cluster. 
 
 ## Build
 The image is prebuilt and availble. Just run `docker pull ghcr.io/anvilco/load-balance-grpc-k8s:latest` to pull locally. The Kubernetes manifest is already prepopulated with the public image. 
