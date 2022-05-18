@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter-server
+spec:
+  selector:
+    matchLabels:
+      app: greeter-server
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: greeter-server
+    spec:
+      containers:
+      - name: greeter-server
+        ports:
+        - protocol: TCP
+          containerPort: 50051
+        image: gcr.io/anvil-staging/load-balance-grpc-k8s:latest
+        imagePullPolicy: Always
+        command:
+          - node
+          - greeter_server
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 750m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeter-server
+spec:
+  selector:
+    app: greeter-server
+  ports:
+  - port: 50051
+    name: greeter-server
+    protocol: TCP
+    targetPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter-client
+spec:
+  selector:
+    matchLabels:
+      app: greeter-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: greeter-client
+    spec:
+      containers:
+      - name: greeter-client
+        image: gcr.io/anvil-staging/load-balance-grpc-k8s:latest
+        imagePullPolicy: Always
+        command:
+          - /bin/sh
+          - -c
+          - 'sleep 1800' # 30m TTL
+        resources:
+          limits:
+            cpu: 750m
+            memory: 1.5Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
