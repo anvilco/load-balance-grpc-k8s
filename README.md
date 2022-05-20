@@ -1,9 +1,8 @@
+---
 ### Repository sponsored by [Anvil](www.useanvil.com/developers) 
-<a href="www.useanvil.com/developers/?utm=gh-load-balance-grpc-k8s">
-  <img src="https://user-images.githubusercontent.com/293079/169449805-6cb716a1-36d6-4cbf-8dd7-6a4b04e69aa9.png" width="50" height="54.75">
-</a>
-<br/>
-<br/>
+
+![Horizontal Lockupblack](https://user-images.githubusercontent.com/293079/169453889-ae211c6c-7634-4ccd-8ca9-8970c2621b6f.png#gh-light-mode-only)
+![Horizontal Lockup copywhite](https://user-images.githubusercontent.com/293079/169453892-895f637b-4633-4a14-b997-960c9e17579b.png#gh-dark-mode-only)
 
 Anvil provides easy APIs for all things paperwork.
 1. [PDF Filling API](https://www.useanvil.com/products/pdf-filling-api/) - fill out a PDF template with a web request and structured JSON data
@@ -12,6 +11,8 @@ Anvil provides easy APIs for all things paperwork.
 4. [Anvil Workflows (w/ API)](https://www.useanvil.com/products/workflows/) - Webforms + PDF + E-sign with a powerful no-code builder. Easily collect structured data, generate PDFs, and request signatures. 
 
 Learn more on our [Anvil developer page](www.useanvil.com/developers)
+
+---
 
 # Load Balancing gRPC in Kubernetes
 This repoisoiry contains a configured gRPC sample application that can be run in Kubernetes to test proper load balancing. 
